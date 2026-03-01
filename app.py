@@ -173,21 +173,36 @@ def update_dashboard(n_clicks, th1s, th2s, th3s, th1g, th2g, th3g, T):
                            xaxis_title="Time (s)")
 
     frames = []
-    for k in range(len(t)):
+    for k in range(0, len(t), 2):   
         x, y = fk(trajectories[k])
-        frames.append(go.Frame(data=[go.Scatter(x=x, y=y, mode='lines+markers')]))
+        frames.append(go.Frame(
+            data=[go.Scatter(x=x, y=y, mode='lines+markers')],
+            name=str(k)
+        ))
+
+    x0, y0 = fk(trajectories[0])
 
     fig_anim = go.Figure(
-        data=[go.Scatter(x=[0], y=[0], mode='lines+markers')],
+        data=[go.Scatter(x=x0, y=y0, mode='lines+markers')],
         frames=frames
     )
 
     fig_anim.update_layout(template="plotly_white",
                            xaxis=dict(range=[-3,3]), yaxis=dict(range=[-3,3]),
-                           updatemenus=[dict(type="buttons",
-                                             buttons=[dict(label="Play",
-                                                           method="animate",
-                                                           args=[None])])])
+                           updatemenus=[{
+                                "type": "buttons",
+                                "buttons": [
+                                    {
+                                        "label": "Play",
+                                        "method": "animate",
+                                        "args": [None, {
+                                            "frame": {"duration": 50, "redraw": True},
+                                            "fromcurrent": True,
+                                            "transition": {"duration": 0}
+                                        }]
+                                    }
+                                ]
+                            }]
 
     return fig_traj, fig_anim
 
@@ -217,3 +232,4 @@ if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 8050))
     app.run(host='0.0.0.0', port=port, debug=False)
+
