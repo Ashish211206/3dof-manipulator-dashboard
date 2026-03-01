@@ -209,6 +209,11 @@ def _run_tests():
 # Run Server (FIXED)
 # -------------------------------
 if __name__ == '__main__':
-    _run_tests()
-    # IMPORTANT FIX: disable debug mode to avoid threading error
-    app.run(debug=False)
+    try:
+        _run_tests()
+    except:
+        pass
+
+    import os
+    port = int(os.environ.get("PORT", 8050))
+    app.run(host='0.0.0.0', port=port, debug=False)
