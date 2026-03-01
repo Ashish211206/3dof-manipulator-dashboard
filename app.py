@@ -202,7 +202,8 @@ def update_dashboard(n_clicks, th1s, th2s, th3s, th1g, th2g, th3g, T):
                                         }]
                                     }
                                 ]
-                            }]
+                            }] 
+                          )
 
     return fig_traj, fig_anim
 
@@ -232,4 +233,5 @@ if __name__ == '__main__':
     import os
     port = int(os.environ.get("PORT", 8050))
     app.run(host='0.0.0.0', port=port, debug=False)
+
 
